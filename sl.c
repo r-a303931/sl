@@ -48,6 +48,7 @@ void add_man(int y, int x);
 int add_C51(int x);
 int add_D51(int x);
 int add_sl(int x);
+int add_rocket(int x);
 void option(char *str);
 int my_mvaddstr(int y, int x, char *str);
 
@@ -55,6 +56,7 @@ int ACCIDENT  = 0;
 int LOGO      = 0;
 int FLY       = 0;
 int C51       = 0;
+int ROCKET    = 0;
 
 int my_mvaddstr(int y, int x, char *str)
 {
@@ -75,6 +77,7 @@ void option(char *str)
             case 'F': FLY      = 1; break;
             case 'l': LOGO     = 1; break;
             case 'c': C51      = 1; break;
+            case 'r': ROCKET   = 1; break;
             default:                break;
         }
     }
@@ -103,6 +106,8 @@ int main(int argc, char *argv[])
         }
         else if (C51 == 1) {
             if (add_C51(x) == ERR) break;
+        } else if(ROCKET == 1) {
+            if (add_rocket(x) == ERR) break;
         }
         else {
             if (add_D51(x) == ERR) break;
@@ -155,6 +160,27 @@ int add_sl(int x)
         add_man(y + 1 + py3, x + 66);  add_man(y + 1 + py3, x + 74);
     }
     add_smoke(y - 1, x + LOGOFUNNEL);
+    return OK;
+}
+
+int add_rocket(int x)
+{
+    static char *rs[RSPATTERNS][RSHEIGHT + 1]
+        = {{RSSTR01, RSSTR02, RSSTR03, RSSTR04, RSSTR05, RSSTR06, RSSTR07,
+            RSSTR08, RSSTR09, RSSTR10, RSSTR11, RSSTR12, RSSTR13, RSSTR14,
+            RSSTR15, RSDEL}};
+
+    int i, y;
+
+    if (x < - RSLENGTH) return ERR;
+    y = LINES / 2 - RSHEIGHT / 2;
+
+    for (i = 0; i <= RSHEIGHT; ++i) {
+        my_mvaddstr(y + i, x, rs[0][i]);
+    }
+    if (ACCIDENT == 1) {
+        add_man(y + 6, x + 24);
+    }
     return OK;
 }
 
